@@ -18,5 +18,8 @@ AudioTeapot.exeを起動するだけ。
 ## System.Reactive (Apache-2.0)
 Copyright (c) .NET Foundation and Contributors.
 
+## ティーポットのアイコン
+Icon made by Freepik from www.flaticon.com 
+
 # License
 The MIT License (c) Hirotoshi Yoshitaka (@TyounanMOTI)
