@@ -6,7 +6,7 @@ AudioTeapot.exeを起動するだけ。
 
 # 機能
 ## 囁きアビリティ
-[memex作の囁きアビリティ](https://memex.booth.pm/items/1177208)を発動します。
+[memexさんの囁きアビリティ](https://memex.booth.pm/items/1177208)を発動します。
 
 約20Hzのサイン波を常に出力してVRChatのノイズゲートを無効化することで、楽器演奏を途切れずに視聴者へ届けることができます。
 
