@@ -1,0 +1,21 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AudioTeapot"
+        xmlns:HookInjector="clr-namespace:AudioTeapot.HookInjector" x:Class="AudioTeapot.MainWindow"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Audio Teapot" Height="100" Width="800">
+    <Grid Margin="0">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ProgressBar x:Name="InjectorProgress" Grid.Row="0"/>
+        <TextBlock x:Name="InjectorProgressText" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="待機中" />
+    </Grid>
+</Window>
