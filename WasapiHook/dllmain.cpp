@@ -14,7 +14,6 @@
 
 using Microsoft::WRL::ComPtr;
 
-static HANDLE file_handle;
 typedef HRESULT(STDMETHODCALLTYPE *get_buffer_pointer)(
   IAudioCaptureClient *this_pointer,
   BYTE **data,
@@ -133,21 +132,6 @@ void on_attach(HINSTANCE hinstance)
 {
   auto current_process_id = GetCurrentProcessId();
 
-  // store dll handle
-  file_handle = CreateFileMapping(
-    INVALID_HANDLE_VALUE,
-    NULL,
-    PAGE_READWRITE,
-    0,
-    sizeof(HANDLE),
-    (std::wstring(L"WasapiHook_dll_handle_")
-      + std::to_wstring(current_process_id)).c_str()
-  );
-
-  auto dll_handle = reinterpret_cast<HANDLE*>(MapViewOfFile(file_handle, FILE_MAP_ALL_ACCESS, 0, 0, sizeof(HANDLE)));
-  *dll_handle = hinstance;
-  UnmapViewOfFile(dll_handle);
-
   // Get audio render client
   ComPtr<IMMDeviceEnumerator> enumerator;
   auto hr = CoCreateInstance(
@@ -203,8 +187,6 @@ void on_detach()
   vtable[4] = release_buffer_original;
   vtable[5] = get_next_packet_size_original;
   VirtualProtect(*reinterpret_cast<PVOID**>(capture_client.Get()), sizeof(LONG_PTR), old_protect, &old_protect);
-
-  CloseHandle(file_handle);
 }
 
 BOOL WINAPI DllMain(
@@ -235,4 +217,17 @@ BOOL WINAPI DllMain(
   }
 
   return TRUE;
+}
+
+extern "C"
+{
+  __declspec(dllexport) LRESULT CALLBACK hook_procedure(int code, WPARAM wparam, LPARAM lparam)
+  {
+    auto message = reinterpret_cast<MSG*>(lparam);
+    if (message->message == (WM_APP + 1))
+    {
+      UnhookWindowsHookEx(reinterpret_cast<HHOOK>(lparam));
+    }
+    return CallNextHookEx(0, code, wparam, lparam);
+  }
 }

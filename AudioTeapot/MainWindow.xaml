@@ -7,7 +7,7 @@
         xmlns:HookInjector="clr-namespace:AudioTeapot.HookInjector" x:Class="AudioTeapot.MainWindow"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Audio Teapot" Height="100" Width="800">
+        Title="Audio Teapot Ver.1.1.0" Height="100" Width="800">
     <Grid Margin="0">
         <Grid.RowDefinitions>
             <RowDefinition/>
