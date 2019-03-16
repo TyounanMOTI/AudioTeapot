@@ -141,7 +141,7 @@ extern "C" {
   {
     try
     {
-      UnhookWindowsHookEx(hook);
+      PostThreadMessage(target_thread_id, WM_APP + 1, 0, (LPARAM)hook);
     }
     catch (const runtime_error& e)
     {
