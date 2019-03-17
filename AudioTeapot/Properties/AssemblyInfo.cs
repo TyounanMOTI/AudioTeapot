@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("AudioTeapot")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("TyounanMOTI")]
 [assembly: AssemblyProduct("AudioTeapot")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCopyright("Copyright © Hirotoshi Yoshitaka 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

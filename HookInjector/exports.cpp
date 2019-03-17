@@ -129,7 +129,7 @@ extern "C" {
       auto wasapi_hook = LoadLibrary(dll_path_pointer);
       auto hook_procedure = reinterpret_cast<HOOKPROC>(GetProcAddress(wasapi_hook, "hook_procedure"));
       hook = SetWindowsHookEx(WH_GETMESSAGE, hook_procedure, wasapi_hook, target_thread_id);
-      PostThreadMessage(target_thread_id, WM_APP, 0, 0);
+      PostThreadMessage(target_thread_id, WM_APP, 0, (LPARAM)hook);
     }
     catch (const runtime_error& e)
     {

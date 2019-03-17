@@ -6,16 +6,46 @@
         xmlns:local="clr-namespace:AudioTeapot"
         xmlns:HookInjector="clr-namespace:AudioTeapot.HookInjector" x:Class="AudioTeapot.MainWindow"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:properties="clr-namespace:AudioTeapot.Properties"
         mc:Ignorable="d"
-        Title="Audio Teapot Ver.1.1.0" Height="100" Width="800">
+        Title="Audio Teapot Ver.1.3.0" Height="150" Width="800">
     <Grid Margin="0">
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ProgressBar x:Name="InjectorProgress" Grid.Row="0"/>
-        <TextBlock x:Name="InjectorProgressText" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="待機中" />
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="実行ファイル名：" VerticalAlignment="Center"/>
+            <ComboBox x:Name="ProcessComboBox" Text="{Binding SelectedValue}" ItemsSource="{Binding ProcessExecutableNames}" Grid.Column="1" VerticalAlignment="Center" Margin="5,0" IsEditable="True"/>
+            <Label Content="起動時に接続：" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <CheckBox x:Name="AutoConnectCheckBox" IsChecked="{Binding AutoConnect, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,10,0"/>
+        </Grid>
+        <ProgressBar x:Name="InjectorProgress" Grid.Row="1"/>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="InjectorProgressText" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="待機中" Margin="2"/>
+            <Button x:Name="CancelButton" Grid.Row="1" Grid.Column="0" Content="キャンセル" Click="CancelButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="2" MinWidth="100" IsEnabled="{Binding Cancellable, Mode=OneWay}"/>
+            <Button x:Name="DisconnectButton" Grid.Row="1" Grid.Column="1" Content="切断" Click="DisconnectButton_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2" MinWidth="100" IsEnabled="{Binding Injected, Mode=OneWay}"/>
+        </Grid>
+        <Button x:Name="ConnectButton" Grid.Row="1" Content="接続" Click="ConnectButton_Click" Visibility="{Binding Injectable, Converter={StaticResource CheckBoxToVisibility}}"/>
     </Grid>
 </Window>

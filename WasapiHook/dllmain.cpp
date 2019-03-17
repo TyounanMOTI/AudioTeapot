@@ -164,6 +164,7 @@ HRESULT get_buffer_hook(
   }
   if (netduetto_buffer_prepared && capture_buffer.size() >= (*num_frames_to_read) * num_channels)
   {
+    std::scoped_lock<std::mutex> lock(capture_buffer_mutex);
     for (unsigned int sample_index = 0; sample_index < (*num_frames_to_read) * num_channels; sample_index++)
     {
       int16_data[sample_index] += capture_buffer.front();
@@ -265,13 +266,23 @@ extern "C"
 {
   __declspec(dllexport) LRESULT CALLBACK hook_procedure(int code, WPARAM wparam, LPARAM lparam)
   {
+    static HHOOK hook = 0;
+    if (code < 0)
+    {
+      return CallNextHookEx(hook, code, wparam, lparam);
+    }
+
     auto message = reinterpret_cast<MSG*>(lparam);
+    if (message->message == (WM_APP))
+    {
+      hook = (HHOOK)(message->lParam);
+    }
     if (message->message == (WM_APP + 1))
     {
       on_detach();
       UnhookWindowsHookEx((HHOOK)(message->lParam));
     }
 
-    return CallNextHookEx(0, code, wparam, lparam);
+    return CallNextHookEx(hook, code, wparam, lparam);
   }
 }

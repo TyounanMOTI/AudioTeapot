@@ -12,21 +12,18 @@ namespace AudioTeapot
     {
         public string[] ProcessExecutableNames { get; private set; }
 
-        private int selectedIndex = -1;
-        public int SelectedIndex
+        private string selectedValue = Properties.Settings.Default.AutoConnectExecutableName;
+        public string SelectedValue
         {
             get
             {
-                if (selectedIndex < 0 && ProcessExecutableNames != null)
-                {
-                    selectedIndex = Array.IndexOf(ProcessExecutableNames, "Unity.exe");
-                }
-                return selectedIndex;
+                return selectedValue;
             }
             set
             {
-                selectedIndex = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("SelectedIndex"));
+                Properties.Settings.Default.AutoConnectExecutableName = value;
+                selectedValue = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(SelectedValue));
             }
         }
 
@@ -41,14 +38,10 @@ namespace AudioTeapot
                 DispatcherPriority.Normal,
                 async (sender, e) =>
                 {
-                    if (selectedIndex < 0)
-                    {
-                        await Refresh();
-                    }
+                    await Refresh();
                 },
                 Dispatcher.CurrentDispatcher
                 );
-            Task.Run(Refresh);
         }
 
         public async Task Refresh()
@@ -65,7 +58,6 @@ namespace AudioTeapot
             });
 
             PropertyChanged(this, new PropertyChangedEventArgs("ProcessExecutableNames"));
-            PropertyChanged(this, new PropertyChangedEventArgs("SelectedIndex"));
         }
     }
 }

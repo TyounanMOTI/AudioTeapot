@@ -115,9 +115,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AudioSourceList.cs" />
-    <Compile Include="AudioSourceListItem.cs" />
+    <Compile Include="BooleanAndVisibilityConverter.cs" />
+    <Compile Include="BooleanNotConverter.cs" />
     <Compile Include="HookInjector.cs" />
+    <Compile Include="InjectionStatus.cs" />
+    <Compile Include="InvertBooleanToVisibilityConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:AudioTeapot"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <BooleanToVisibilityConverter x:Key="CheckBoxToVisibility"/>
+        <local:InvertBooleanToVisibilityConverter x:Key="InvertCheckBoxToVisibility"/>
     </Application.Resources>
 </Application>
