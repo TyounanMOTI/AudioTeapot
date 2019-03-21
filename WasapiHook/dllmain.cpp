@@ -56,6 +56,7 @@ static std::atomic<bool> capture_stop_requested = false;
 static std::mutex capture_buffer_mutex;
 static std::deque<int16_t> capture_buffer;
 static ComPtr<IMMDeviceEnumerator> enumerator;
+static const float sqrt_2 = std::sqrt(2.0f);
 
 static void capture()
 {
@@ -91,7 +92,18 @@ static void capture()
             capture_buffer.pop_front();
           }
         }
-        std::copy(int16_buffer, int16_buffer + num_frames_to_read * num_channels, std::back_inserter(capture_buffer));
+        if (num_channels == 2)
+        {
+          std::copy(int16_buffer, int16_buffer + num_frames_to_read * 2, std::back_inserter(capture_buffer));
+        }
+        else if (num_channels == 1)
+        {
+          for (auto sample_count = 0u; sample_count < num_frames_to_read * 2; sample_count += 2)
+          {
+            // downmix 2ch -> 1ch = (L + R) - 3dB
+            capture_buffer.push_back(static_cast<int16_t>(((float)int16_buffer[sample_count] + (float)int16_buffer[sample_count + 1]) / sqrt_2));
+          }
+        }
       }
 
       hr = capture_client->ReleaseBuffer(num_frames_to_read);
