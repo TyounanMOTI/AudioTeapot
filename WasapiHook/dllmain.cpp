@@ -84,6 +84,13 @@ static void capture()
       auto int16_buffer = reinterpret_cast<int16_t*>(data);
       {
         std::scoped_lock<std::mutex> lock(capture_buffer_mutex);
+        if (capture_buffer.size() + num_frames_to_read * num_channels > num_frames_to_read * num_channels * 4)
+        {
+          for (auto sample_count = 0u; sample_count < num_frames_to_read * num_channels * 4 - (capture_buffer.size() + num_frames_to_read * num_channels); sample_count++)
+          {
+            capture_buffer.pop_front();
+          }
+        }
         std::copy(int16_buffer, int16_buffer + num_frames_to_read * num_channels, std::back_inserter(capture_buffer));
       }
 
@@ -158,17 +165,24 @@ HRESULT get_buffer_hook(
     }
   }
 
-  if (!netduetto_buffer_prepared && capture_buffer.size() > (*num_frames_to_read) * num_channels * 2)
-  {
-    netduetto_buffer_prepared = true;
-  }
-  if (netduetto_buffer_prepared && capture_buffer.size() >= (*num_frames_to_read) * num_channels)
   {
     std::scoped_lock<std::mutex> lock(capture_buffer_mutex);
-    for (unsigned int sample_index = 0; sample_index < (*num_frames_to_read) * num_channels; sample_index++)
+    if (!netduetto_buffer_prepared && capture_buffer.size() > (*num_frames_to_read) * num_channels * 2)
     {
-      int16_data[sample_index] += capture_buffer.front();
-      capture_buffer.pop_front();
+      netduetto_buffer_prepared = true;
+
+      for (auto sample_count = 0u; sample_count < capture_buffer.size() - (*num_frames_to_read) * num_channels * 2; sample_count++)
+      {
+        capture_buffer.pop_front();
+      }
+    }
+    if (netduetto_buffer_prepared && capture_buffer.size() >= (*num_frames_to_read) * num_channels)
+    {
+      for (unsigned int sample_index = 0; sample_index < (*num_frames_to_read) * num_channels; sample_index++)
+      {
+        int16_data[sample_index] += capture_buffer.front();
+        capture_buffer.pop_front();
+      }
     }
   }
 
