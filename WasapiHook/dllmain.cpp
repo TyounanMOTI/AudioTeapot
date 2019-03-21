@@ -154,7 +154,7 @@ HRESULT get_buffer_hook(
     phase = std::fmod(phase, 2.0f * pi);
     for (int channel_index = 0; channel_index < num_channels; channel_index++)
     {
-      int16_data[sample_index + channel_index] += static_cast<int16_t>((1 << 15) * magic_amplitude * std::sin(phase));
+      int16_data[sample_index + channel_index] = static_cast<int16_t>((1 << 15) * magic_amplitude * std::sin(phase));
     }
   }
 
