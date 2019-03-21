@@ -8,7 +8,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:properties="clr-namespace:AudioTeapot.Properties"
         mc:Ignorable="d"
-        Title="Audio Teapot Ver.1.4.0" Height="150" Width="800">
+        Title="Audio Teapot Ver.1.4.1" Height="150" Width="800">
     <Grid Margin="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
