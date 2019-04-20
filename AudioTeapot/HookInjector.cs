@@ -48,6 +48,14 @@ namespace AudioTeapot.HookInjector
         {
             NativePlugin.Remove(processId, "WasapiHook.dll");
         }
+
+        public static bool MixDefaultInput
+        {
+            set
+            {
+                NativePlugin.SetMixDefaultInput(value);
+            }
+        }
     }
 
     internal class NativePlugin
@@ -71,5 +79,8 @@ namespace AudioTeapot.HookInjector
 
         [DllImport("HookInjector.dll", CharSet = CharSet.Unicode)]
         public static extern void Remove(uint processId, string dllPath);
+
+        [DllImport("HookInjector.dll")]
+        public static extern void SetMixDefaultInput(bool enable);
     }
 }

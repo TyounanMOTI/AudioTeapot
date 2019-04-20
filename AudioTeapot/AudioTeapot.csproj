@@ -117,6 +117,7 @@
     </Compile>
     <Compile Include="BooleanAndVisibilityConverter.cs" />
     <Compile Include="BooleanNotConverter.cs" />
+    <Compile Include="HookConfiguration.cs" />
     <Compile Include="HookInjector.cs" />
     <Compile Include="InjectionStatus.cs" />
     <Compile Include="InvertBooleanToVisibilityConverter.cs" />

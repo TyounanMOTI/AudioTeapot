@@ -46,5 +46,17 @@ namespace AudioTeapot.Properties {
                 this["AutoConnectExecutableName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MixDefaultInput {
+            get {
+                return ((bool)(this["MixDefaultInput"]));
+            }
+            set {
+                this["MixDefaultInput"] = value;
+            }
+        }
     }
 }

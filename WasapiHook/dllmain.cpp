@@ -57,6 +57,7 @@ static std::mutex capture_buffer_mutex;
 static std::deque<int16_t> capture_buffer;
 static ComPtr<IMMDeviceEnumerator> enumerator;
 static const float sqrt_2 = std::sqrt(2.0f);
+static bool mix_default_input = false;
 
 static void capture()
 {
@@ -173,7 +174,15 @@ HRESULT get_buffer_hook(
     phase = std::fmod(phase, 2.0f * pi);
     for (int channel_index = 0; channel_index < num_channels; channel_index++)
     {
-      int16_data[sample_index + channel_index] = static_cast<int16_t>((1 << 15) * magic_amplitude * std::sin(phase));
+      auto whisper_ability = static_cast<int16_t>((1 << 15) * magic_amplitude * std::sin(phase));
+      if (mix_default_input)
+      {
+        int16_data[sample_index + channel_index] += whisper_ability;
+      }
+      else
+      {
+        int16_data[sample_index + channel_index] = whisper_ability;
+      }
     }
   }
 
@@ -307,6 +316,17 @@ extern "C"
     {
       on_detach();
       UnhookWindowsHookEx((HHOOK)(message->lParam));
+    }
+    if (message->message == WM_APP + 2)
+    {
+      if ((int)message->lParam == 0)
+      {
+        mix_default_input = false;
+      }
+      else
+      {
+        mix_default_input = true;
+      }
     }
 
     return CallNextHookEx(hook, code, wparam, lparam);

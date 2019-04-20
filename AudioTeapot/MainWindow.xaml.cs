@@ -33,10 +33,11 @@ namespace AudioTeapot {
     }
 
     public partial class MainWindow : Window {
-        private uint injectedProcessId;
-        private ProcessEnumerator enumerator = new ProcessEnumerator();
-        private CancellationTokenSource injectCancel = new CancellationTokenSource();
-        private InjectionStatus injectionStatus = new InjectionStatus();
+        uint injectedProcessId;
+        ProcessEnumerator enumerator = new ProcessEnumerator();
+        CancellationTokenSource injectCancel = new CancellationTokenSource();
+        InjectionStatus injectionStatus = new InjectionStatus();
+        HookConfiguration hookConfiguration = new HookConfiguration();
 
         public MainWindow() {
             InitializeComponent();
@@ -45,6 +46,7 @@ namespace AudioTeapot {
             DisconnectButton.DataContext = injectionStatus;
             CancelButton.DataContext = injectionStatus;
             ConnectButton.DataContext = injectionStatus;
+            MixDefaultInputCheckBox.DataContext = hookConfiguration;
 
             Closing += MainWindow_Closing;
 
@@ -117,6 +119,7 @@ namespace AudioTeapot {
                     await Task.Run(() =>
                     {
                         Injector.Inject(injectedProcessId);
+                        Injector.MixDefaultInput = Properties.Settings.Default.MixDefaultInput;
                     });
 
                     await Task.Delay(1000, injectCancel.Token);

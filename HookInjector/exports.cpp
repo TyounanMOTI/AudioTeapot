@@ -148,4 +148,16 @@ extern "C" {
       OutputDebugString(e.get_message().c_str());
     }
   }
+
+  INJECTOR_EXPORTS void INJECTOR_API SetMixDefaultInput(bool enable)
+  {
+    try
+    {
+      PostThreadMessage(target_thread_id, WM_APP + 2, 0, (enable) ? 1 : 0);
+    }
+    catch (const runtime_error& e)
+    {
+      OutputDebugString(e.get_message().c_str());
+    }
+  }
 }
