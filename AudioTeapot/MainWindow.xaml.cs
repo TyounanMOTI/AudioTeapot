@@ -46,7 +46,13 @@ namespace AudioTeapot {
             DisconnectButton.DataContext = injectionStatus;
             CancelButton.DataContext = injectionStatus;
             ConnectButton.DataContext = injectionStatus;
-            MixDefaultInputCheckBox.DataContext = hookConfiguration;
+
+            WhisperVolumeSlider.DataContext = hookConfiguration;
+            WhisperVolumeTextBox.DataContext = hookConfiguration;
+            InputMixVolumeSlider.DataContext = hookConfiguration;
+            InputMixVolumeTextBox.DataContext = hookConfiguration;
+            NetduettoVolumeSlider.DataContext = hookConfiguration;
+            NetduettoVlumeTextBox.DataContext = hookConfiguration;
 
             Closing += MainWindow_Closing;
 
@@ -119,7 +125,9 @@ namespace AudioTeapot {
                     await Task.Run(() =>
                     {
                         Injector.Inject(injectedProcessId);
-                        Injector.MixDefaultInput = Properties.Settings.Default.MixDefaultInput;
+                        Injector.InputMixVolume = Properties.Settings.Default.InputMixVolume;
+                        Injector.NetduettoVolume = Properties.Settings.Default.NetduettoVolume;
+                        Injector.WhisperVolume = Properties.Settings.Default.WhisperVolume;
                     });
 
                     await Task.Delay(1000, injectCancel.Token);

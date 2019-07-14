@@ -47,7 +47,6 @@ static REFERENCE_TIME default_period;
 static float phase = 0.0f;
 static const float pi = 3.141592653589793f;
 static const float magic_frequency = 20.0f;
-static const float magic_amplitude = 0.2f;
 static bool netduetto_buffer_prepared = false;
 static HANDLE capture_event;
 static ComPtr<IAudioClient> audio_client;
@@ -57,7 +56,9 @@ static std::mutex capture_buffer_mutex;
 static std::deque<int16_t> capture_buffer;
 static ComPtr<IMMDeviceEnumerator> enumerator;
 static const float sqrt_2 = std::sqrt(2.0f);
-static bool mix_default_input = false;
+static int whisper_volume = -60;
+static int input_mix_volume = -60;
+static int netduetto_volume = -60;
 
 static void capture()
 {
@@ -124,6 +125,11 @@ HRESULT get_buffer_hook(
 {
   auto original_hr = get_buffer_original(this_pointer, data, num_frames_to_read, flags, device_position, QPC_position);
 
+  if (data == nullptr || *data == nullptr)
+  {
+    return original_hr;
+  }
+
   if (sampling_rate < 0)
   {
     sampling_rate = static_cast<int>((*num_frames_to_read) / (default_period / 10000000.0));
@@ -168,21 +174,25 @@ HRESULT get_buffer_hook(
   }
 
   auto* int16_data = *(reinterpret_cast<int16_t**>(data));
+  auto* float_data = *(reinterpret_cast<float**>(data));
+
+  auto input_mix_amplitude = (input_mix_volume <= -60) ? 0.0f : std::powf(10, (float)input_mix_volume / 20.0f);
+  auto whisper_amplitude = (whisper_volume <= -60) ? 0.0f : std::powf(10, (float)whisper_volume / 20.0f);
+  auto netduetto_amplitude = (netduetto_volume <= -60) ? 0.0f : std::powf(10, (float)netduetto_volume / 20.0f);
+
+  float sampling_rate_float = (float)sampling_rate;
   for (unsigned int sample_index = 0; sample_index < (*num_frames_to_read) * num_channels; sample_index += num_channels)
   {
-    phase += magic_frequency * 2.0f * pi / sampling_rate;
-    phase = std::fmod(phase, 2.0f * pi);
+    phase += magic_frequency * 2.0f * pi / sampling_rate_float;
+    while (phase > 2.0f * pi)
+    {
+      phase -= 2.0f * pi;
+    }
+    auto whisper_ability = static_cast<int16_t>(((1 << 15) - 1) * whisper_amplitude * std::sin(phase));
     for (int channel_index = 0; channel_index < num_channels; channel_index++)
     {
-      auto whisper_ability = static_cast<int16_t>((1 << 15) * magic_amplitude * std::sin(phase));
-      if (mix_default_input)
-      {
-        int16_data[sample_index + channel_index] += whisper_ability;
-      }
-      else
-      {
-        int16_data[sample_index + channel_index] = whisper_ability;
-      }
+      int16_data[sample_index + channel_index] = (int)std::floorf(int16_data[sample_index + channel_index] * input_mix_amplitude);
+      int16_data[sample_index + channel_index] += whisper_ability;
     }
   }
 
@@ -201,7 +211,7 @@ HRESULT get_buffer_hook(
     {
       for (unsigned int sample_index = 0; sample_index < (*num_frames_to_read) * num_channels; sample_index++)
       {
-        int16_data[sample_index] += capture_buffer.front();
+        int16_data[sample_index] += (int)std::floorf(capture_buffer.front() * netduetto_amplitude);
         capture_buffer.pop_front();
       }
     }
@@ -247,6 +257,8 @@ static void on_attach(HINSTANCE hinstance)
     vtable[3] = get_buffer_hook;
     VirtualProtect(*reinterpret_cast<PVOID**>(capture_client.Get()), sizeof(LONG_PTR), old_protect, &old_protect);
   }
+
+  phase = 0.0f;
 }
 
 static void on_detach()
@@ -319,14 +331,15 @@ extern "C"
     }
     if (message->message == WM_APP + 2)
     {
-      if ((int)message->lParam == 0)
-      {
-        mix_default_input = false;
-      }
-      else
-      {
-        mix_default_input = true;
-      }
+      input_mix_volume = (int)message->lParam;
+    }
+    if (message->message == WM_APP + 3)
+    {
+      whisper_volume = (int)message->lParam;
+    }
+    if (message->message == WM_APP + 4)
+    {
+      netduetto_volume = (int)message->lParam;
     }
 
     return CallNextHookEx(hook, code, wparam, lparam);

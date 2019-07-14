@@ -12,7 +12,7 @@ namespace AudioTeapot.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.1.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -49,13 +49,49 @@ namespace AudioTeapot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool MixDefaultInput {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int InputMixVolume {
             get {
-                return ((bool)(this["MixDefaultInput"]));
+                return ((int)(this["InputMixVolume"]));
             }
             set {
-                this["MixDefaultInput"] = value;
+                this["InputMixVolume"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-40")]
+        public int WhisperVolume {
+            get {
+                return ((int)(this["WhisperVolume"]));
+            }
+            set {
+                this["WhisperVolume"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int NetduettoVolume {
+            get {
+                return ((int)(this["NetduettoVolume"]));
+            }
+            set {
+                this["NetduettoVolume"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("16bit 整数")]
+        public string AudioSampleFormat {
+            get {
+                return ((string)(this["AudioSampleFormat"]));
+            }
+            set {
+                this["AudioSampleFormat"] = value;
             }
         }
     }

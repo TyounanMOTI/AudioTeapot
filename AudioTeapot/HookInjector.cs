@@ -49,11 +49,26 @@ namespace AudioTeapot.HookInjector
             NativePlugin.Remove(processId, "WasapiHook.dll");
         }
 
-        public static bool MixDefaultInput
+        public static int WhisperVolume
         {
             set
             {
-                NativePlugin.SetMixDefaultInput(value);
+                NativePlugin.SetWhisperVolume(value);
+            }
+        }
+
+        public static int InputMixVolume
+        {
+            set
+            {
+                NativePlugin.SetInputMixVolume(value);
+            }
+        }
+        public static int NetduettoVolume
+        {
+            set
+            {
+                NativePlugin.SetNetduettoVolume(value);
             }
         }
     }
@@ -81,6 +96,12 @@ namespace AudioTeapot.HookInjector
         public static extern void Remove(uint processId, string dllPath);
 
         [DllImport("HookInjector.dll")]
-        public static extern void SetMixDefaultInput(bool enable);
+        public static extern void SetInputMixVolume(int volume);
+
+        [DllImport("HookInjector.dll")]
+        public static extern void SetWhisperVolume(int volume);
+
+        [DllImport("HookInjector.dll")]
+        public static extern void SetNetduettoVolume(int volume);
     }
 }

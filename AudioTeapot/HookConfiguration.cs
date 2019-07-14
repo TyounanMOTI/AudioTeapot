@@ -9,17 +9,45 @@ namespace AudioTeapot
 {
     class HookConfiguration : INotifyPropertyChanged
     {
-        public bool MixDefaultInput
+        public int WhisperVolume
         {
             get
             {
-                return Properties.Settings.Default.MixDefaultInput;
+                return Properties.Settings.Default.WhisperVolume;
             }
             set
             {
-                Properties.Settings.Default.MixDefaultInput = value;
-                HookInjector.Injector.MixDefaultInput = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("MixDefaultInput"));
+                Properties.Settings.Default.WhisperVolume = value;
+                HookInjector.Injector.WhisperVolume = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WhisperVolume)));
+            }
+        }
+
+        public int InputMixVolume
+        {
+            get
+            {
+                return Properties.Settings.Default.InputMixVolume;
+            }
+            set
+            {
+                Properties.Settings.Default.InputMixVolume = value;
+                HookInjector.Injector.InputMixVolume = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InputMixVolume)));
+            }
+        }
+
+        public int NetduettoVolume
+        {
+            get
+            {
+                return Properties.Settings.Default.NetduettoVolume;
+            }
+            set
+            {
+                Properties.Settings.Default.NetduettoVolume = value;
+                HookInjector.Injector.NetduettoVolume = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NetduettoVolume)));
             }
         }
 

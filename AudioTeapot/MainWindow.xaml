@@ -8,11 +8,11 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:properties="clr-namespace:AudioTeapot.Properties"
         mc:Ignorable="d"
-        Title="Audio Teapot Ver.1.5.0" Height="190" Width="800">
+        Title="Audio Teapot Ver.1.6.0" SizeToContent="WidthAndHeight">
     <Grid Margin="0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition/>
+            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -21,19 +21,34 @@
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="500"/>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="30"/>
             </Grid.ColumnDefinitions>
-            <Label Content="実行ファイル名：" VerticalAlignment="Center"/>
+            <Label Content="実行ファイル名：" VerticalAlignment="Center" HorizontalAlignment="Right"/>
             <ComboBox x:Name="ProcessComboBox" Text="{Binding SelectedValue}" ItemsSource="{Binding ProcessExecutableNames}" Grid.Column="1" VerticalAlignment="Center" Margin="5,0" IsEditable="True"/>
             <Label Content="起動時に接続：" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
             <CheckBox x:Name="AutoConnectCheckBox" IsChecked="{Binding AutoConnect, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,10,0"/>
-            <Label Content="既定入力ミックス：" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-            <CheckBox x:Name="MixDefaultInputCheckBox" IsChecked="{Binding MixDefaultInput, Mode=TwoWay}" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,10,0"/>
+            
+            <Label Content="ノイズゲート無効化音：" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <Slider x:Name="WhisperVolumeSlider" Value="{Binding WhisperVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="5" Minimum="-60" Maximum="0"/>
+            <TextBox x:Name="WhisperVolumeTextBox" Text="{Binding WhisperVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="5,0"/>
+            <Label Content="dB" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center"/>
+            
+            <Label Content="既定入力ミックス：" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <Slider x:Name="InputMixVolumeSlider" Value="{Binding InputMixVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="5" Minimum="-60" Maximum="0"/>
+            <TextBox x:Name="InputMixVolumeTextBox" Text="{Binding InputMixVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Margin="5,0"/>
+            <Label Content="dB" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center"/>
+            
+            <Label Content="NETDUETTO出力音：" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <Slider x:Name="NetduettoVolumeSlider" Value="{Binding NetduettoVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="5" Minimum="-60" Maximum="0"/>
+            <TextBox x:Name="NetduettoVlumeTextBox" Text="{Binding NetduettoVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Margin="5,0"/>
+            <Label Content="dB" Grid.Row="3" Grid.Column="3" VerticalAlignment="Center"/>
         </Grid>
         <ProgressBar x:Name="InjectorProgress" Grid.Row="1"/>
         <Grid Grid.Row="2">

@@ -8,8 +8,17 @@
     <Setting Name="AutoConnectExecutableName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="MixDefaultInput" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+    <Setting Name="InputMixVolume" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="WhisperVolume" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">-40</Value>
+    </Setting>
+    <Setting Name="NetduettoVolume" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="AudioSampleFormat" Type="System.String" Scope="User">
+      <Value Profile="(Default)">16bit 整数</Value>
     </Setting>
   </Settings>
 </SettingsFile>

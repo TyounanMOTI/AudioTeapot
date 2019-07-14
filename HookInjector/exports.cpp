@@ -149,15 +149,18 @@ extern "C" {
     }
   }
 
-  INJECTOR_EXPORTS void INJECTOR_API SetMixDefaultInput(bool enable)
+  INJECTOR_EXPORTS void INJECTOR_API SetInputMixVolume(int volume)
   {
-    try
-    {
-      PostThreadMessage(target_thread_id, WM_APP + 2, 0, (enable) ? 1 : 0);
-    }
-    catch (const runtime_error& e)
-    {
-      OutputDebugString(e.get_message().c_str());
-    }
+    PostThreadMessage(target_thread_id, WM_APP + 2, 0, volume);
+  }
+
+  INJECTOR_EXPORTS void INJECTOR_API SetWhisperVolume(int volume)
+  {
+    PostThreadMessage(target_thread_id, WM_APP + 3, 0, volume);
+  }
+
+  INJECTOR_EXPORTS void INJECTOR_API SetNetduettoVolume(int volume)
+  {
+    PostThreadMessage(target_thread_id, WM_APP + 4, 0, volume);
   }
 }
