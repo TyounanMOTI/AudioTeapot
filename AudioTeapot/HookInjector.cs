@@ -64,11 +64,11 @@ namespace AudioTeapot.HookInjector
                 NativePlugin.SetInputMixVolume(value);
             }
         }
-        public static int NetduettoVolume
+        public static int SyncroomVolume
         {
             set
             {
-                NativePlugin.SetNetduettoVolume(value);
+                NativePlugin.SetSyncroomVolume(value);
             }
         }
     }
@@ -102,6 +102,6 @@ namespace AudioTeapot.HookInjector
         public static extern void SetWhisperVolume(int volume);
 
         [DllImport("HookInjector.dll")]
-        public static extern void SetNetduettoVolume(int volume);
+        public static extern void SetSyncroomVolume(int volume);
     }
 }

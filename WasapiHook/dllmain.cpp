@@ -47,7 +47,7 @@ static REFERENCE_TIME default_period;
 static float phase = 0.0f;
 static const float pi = 3.141592653589793f;
 static const float magic_frequency = 20.0f;
-static bool netduetto_buffer_prepared = false;
+static bool syncroom_buffer_prepared = false;
 static HANDLE capture_event;
 static ComPtr<IAudioClient> audio_client;
 static std::thread capture_thread;
@@ -58,7 +58,7 @@ static ComPtr<IMMDeviceEnumerator> enumerator;
 static const float sqrt_2 = std::sqrt(2.0f);
 static int whisper_volume = -60;
 static int input_mix_volume = -60;
-static int netduetto_volume = -60;
+static int syncroom_volume = -60;
 
 static void capture()
 {
@@ -147,25 +147,25 @@ HRESULT get_buffer_hook(
       PROPVARIANT variant;
       PropVariantInit(&variant);
       properties->GetValue(PKEY_DeviceInterface_FriendlyName, &variant);
-      if (std::wstring(variant.pwszVal) == L"Yamaha NETDUETTO Driver (WDM)")
+      if (std::wstring(variant.pwszVal) == L"Yamaha SYNCROOM Driver (WDM)")
       {
         break;
       }
     }
 
     hr = device->Activate(__uuidof(IAudioClient), CLSCTX_ALL, NULL, &audio_client);
-    WAVEFORMATEX netduetto_format;
-    netduetto_format.wFormatTag = WAVE_FORMAT_PCM;
-    netduetto_format.nChannels = 2;
-    netduetto_format.nSamplesPerSec = sampling_rate;
-    netduetto_format.wBitsPerSample = 16;
-    netduetto_format.nBlockAlign = netduetto_format.nChannels * netduetto_format.wBitsPerSample / 8;
-    netduetto_format.nAvgBytesPerSec = netduetto_format.nSamplesPerSec * netduetto_format.nBlockAlign;
-    netduetto_format.cbSize = 0;
+    WAVEFORMATEX syncroom_format;
+    syncroom_format.wFormatTag = WAVE_FORMAT_PCM;
+    syncroom_format.nChannels = 2;
+    syncroom_format.nSamplesPerSec = sampling_rate;
+    syncroom_format.wBitsPerSample = 16;
+    syncroom_format.nBlockAlign = syncroom_format.nChannels * syncroom_format.wBitsPerSample / 8;
+    syncroom_format.nAvgBytesPerSec = syncroom_format.nSamplesPerSec * syncroom_format.nBlockAlign;
+    syncroom_format.cbSize = 0;
 
-    REFERENCE_TIME netduetto_default_period, netduetto_minimum_period;
-    hr = audio_client->GetDevicePeriod(&netduetto_default_period, &netduetto_minimum_period);
-    hr = audio_client->Initialize(AUDCLNT_SHAREMODE_SHARED, AUDCLNT_STREAMFLAGS_EVENTCALLBACK | AUDCLNT_STREAMFLAGS_RATEADJUST, netduetto_default_period, 0, &netduetto_format, NULL);
+    REFERENCE_TIME syncroom_default_period, syncroom_minimum_period;
+    hr = audio_client->GetDevicePeriod(&syncroom_default_period, &syncroom_minimum_period);
+    hr = audio_client->Initialize(AUDCLNT_SHAREMODE_SHARED, AUDCLNT_STREAMFLAGS_EVENTCALLBACK | AUDCLNT_STREAMFLAGS_RATEADJUST, syncroom_default_period, 0, &syncroom_format, NULL);
     hr = audio_client->GetService(IID_PPV_ARGS(&capture_client));
     capture_event = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     audio_client->SetEventHandle(capture_event);
@@ -178,7 +178,7 @@ HRESULT get_buffer_hook(
 
   auto input_mix_amplitude = (input_mix_volume <= -60) ? 0.0f : std::powf(10, (float)input_mix_volume / 20.0f);
   auto whisper_amplitude = (whisper_volume <= -60) ? 0.0f : std::powf(10, (float)whisper_volume / 20.0f);
-  auto netduetto_amplitude = (netduetto_volume <= -60) ? 0.0f : std::powf(10, (float)netduetto_volume / 20.0f);
+  auto syncroom_amplitude = (syncroom_volume <= -60) ? 0.0f : std::powf(10, (float)syncroom_volume / 20.0f);
 
   float sampling_rate_float = (float)sampling_rate;
   for (unsigned int sample_index = 0; sample_index < (*num_frames_to_read) * num_channels; sample_index += num_channels)
@@ -198,20 +198,20 @@ HRESULT get_buffer_hook(
 
   {
     std::scoped_lock<std::mutex> lock(capture_buffer_mutex);
-    if (!netduetto_buffer_prepared && capture_buffer.size() > (*num_frames_to_read) * num_channels * 2)
+    if (!syncroom_buffer_prepared && capture_buffer.size() > (*num_frames_to_read) * num_channels * 2)
     {
-      netduetto_buffer_prepared = true;
+      syncroom_buffer_prepared = true;
 
       for (auto sample_count = 0u; sample_count < capture_buffer.size() - (*num_frames_to_read) * num_channels * 2; sample_count++)
       {
         capture_buffer.pop_front();
       }
     }
-    if (netduetto_buffer_prepared && capture_buffer.size() >= (*num_frames_to_read) * num_channels)
+    if (syncroom_buffer_prepared && capture_buffer.size() >= (*num_frames_to_read) * num_channels)
     {
       for (unsigned int sample_index = 0; sample_index < (*num_frames_to_read) * num_channels; sample_index++)
       {
-        int16_data[sample_index] += (int)std::floorf(capture_buffer.front() * netduetto_amplitude);
+        int16_data[sample_index] += (int)std::floorf(capture_buffer.front() * syncroom_amplitude);
         capture_buffer.pop_front();
       }
     }
@@ -339,7 +339,7 @@ extern "C"
     }
     if (message->message == WM_APP + 4)
     {
-      netduetto_volume = (int)message->lParam;
+      syncroom_volume = (int)message->lParam;
     }
 
     return CallNextHookEx(hook, code, wparam, lparam);

@@ -45,9 +45,9 @@
             <TextBox x:Name="InputMixVolumeTextBox" Text="{Binding InputMixVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Margin="5,0"/>
             <Label Content="dB" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center"/>
             
-            <Label Content="NETDUETTO出力音：" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-            <Slider x:Name="NetduettoVolumeSlider" Value="{Binding NetduettoVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="5" Minimum="-60" Maximum="0"/>
-            <TextBox x:Name="NetduettoVlumeTextBox" Text="{Binding NetduettoVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Margin="5,0"/>
+            <Label Content="SYNCROOM出力音：" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <Slider x:Name="SyncroomVolumeSlider" Value="{Binding SyncroomVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="5" Minimum="-60" Maximum="0"/>
+            <TextBox x:Name="SyncroomVlumeTextBox" Text="{Binding SyncroomVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Margin="5,0"/>
             <Label Content="dB" Grid.Row="3" Grid.Column="3" VerticalAlignment="Center"/>
         </Grid>
         <ProgressBar x:Name="InjectorProgress" Grid.Row="1"/>

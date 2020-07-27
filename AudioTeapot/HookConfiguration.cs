@@ -37,17 +37,17 @@ namespace AudioTeapot
             }
         }
 
-        public int NetduettoVolume
+        public int SyncroomVolume
         {
             get
             {
-                return Properties.Settings.Default.NetduettoVolume;
+                return Properties.Settings.Default.SyncroomVolume;
             }
             set
             {
-                Properties.Settings.Default.NetduettoVolume = value;
-                HookInjector.Injector.NetduettoVolume = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NetduettoVolume)));
+                Properties.Settings.Default.SyncroomVolume = value;
+                HookInjector.Injector.SyncroomVolume = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SyncroomVolume)));
             }
         }
 

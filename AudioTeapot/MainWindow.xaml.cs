@@ -51,8 +51,8 @@ namespace AudioTeapot {
             WhisperVolumeTextBox.DataContext = hookConfiguration;
             InputMixVolumeSlider.DataContext = hookConfiguration;
             InputMixVolumeTextBox.DataContext = hookConfiguration;
-            NetduettoVolumeSlider.DataContext = hookConfiguration;
-            NetduettoVlumeTextBox.DataContext = hookConfiguration;
+            SyncroomVolumeSlider.DataContext = hookConfiguration;
+            SyncroomVlumeTextBox.DataContext = hookConfiguration;
 
             Closing += MainWindow_Closing;
 
@@ -126,7 +126,7 @@ namespace AudioTeapot {
                     {
                         Injector.Inject(injectedProcessId);
                         Injector.InputMixVolume = Properties.Settings.Default.InputMixVolume;
-                        Injector.NetduettoVolume = Properties.Settings.Default.NetduettoVolume;
+                        Injector.SyncroomVolume = Properties.Settings.Default.SyncroomVolume;
                         Injector.WhisperVolume = Properties.Settings.Default.WhisperVolume;
                     });
 

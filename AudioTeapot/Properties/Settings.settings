@@ -12,9 +12,9 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="WhisperVolume" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">-40</Value>
+      <Value Profile="(Default)">-34</Value>
     </Setting>
-    <Setting Name="NetduettoVolume" Type="System.Int32" Scope="User">
+    <Setting Name="SyncroomVolume" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="AudioSampleFormat" Type="System.String" Scope="User">

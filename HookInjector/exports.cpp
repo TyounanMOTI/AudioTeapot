@@ -159,7 +159,7 @@ extern "C" {
     PostThreadMessage(target_thread_id, WM_APP + 3, 0, volume);
   }
 
-  INJECTOR_EXPORTS void INJECTOR_API SetNetduettoVolume(int volume)
+  INJECTOR_EXPORTS void INJECTOR_API SetSyncroomVolume(int volume)
   {
     PostThreadMessage(target_thread_id, WM_APP + 4, 0, volume);
   }
