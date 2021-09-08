@@ -8,6 +8,7 @@
 #include <wrl/client.h>
 #include <functiondiscoverykeys_devpkey.h>
 #include <functional>
+#include <iterator>
 #include <stdexcept>
 #include <string>
 #include <algorithm>
